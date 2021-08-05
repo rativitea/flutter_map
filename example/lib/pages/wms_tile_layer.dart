@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
-
+// import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 import '../widgets/drawer.dart';
 
 class WMSLayerPage extends StatelessWidget {
@@ -23,7 +23,7 @@ class WMSLayerPage extends StatelessWidget {
             Flexible(
               child: FlutterMap(
                 options: MapOptions(
-                  center: LatLng(42.58, 12.43),
+                  center: google_maps.LatLng(42.58, 12.43),
                   zoom: 6.0,
                 ),
                 layers: [

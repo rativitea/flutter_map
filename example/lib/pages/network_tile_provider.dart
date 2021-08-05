@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
-
+// import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 import '../widgets/drawer.dart';
 
 class NetworkTileProviderPage extends StatelessWidget {
@@ -13,7 +13,7 @@ class NetworkTileProviderPage extends StatelessWidget {
       Marker(
         width: 80.0,
         height: 80.0,
-        point: LatLng(51.5, -0.09),
+        point: google_maps.LatLng(51.5, -0.09),
         builder: (ctx) => Container(
           child: FlutterLogo(
             textColor: Colors.blue,
@@ -24,7 +24,7 @@ class NetworkTileProviderPage extends StatelessWidget {
       Marker(
         width: 80.0,
         height: 80.0,
-        point: LatLng(53.3498, -6.2603),
+        point: google_maps.LatLng(53.3498, -6.2603),
         builder: (ctx) => Container(
           child: FlutterLogo(
             textColor: Colors.green,
@@ -35,7 +35,7 @@ class NetworkTileProviderPage extends StatelessWidget {
       Marker(
         width: 80.0,
         height: 80.0,
-        point: LatLng(48.8566, 2.3522),
+        point: google_maps.LatLng(48.8566, 2.3522),
         builder: (ctx) => Container(
           child: FlutterLogo(
             textColor: Colors.purple,
@@ -63,7 +63,7 @@ class NetworkTileProviderPage extends StatelessWidget {
             Flexible(
               child: FlutterMap(
                 options: MapOptions(
-                  center: LatLng(51.5, -0.09),
+                  center: google_maps.LatLng(51.5, -0.09),
                   zoom: 5.0,
                 ),
                 layers: [

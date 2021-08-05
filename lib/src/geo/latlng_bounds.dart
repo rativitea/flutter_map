@@ -1,17 +1,27 @@
 import 'dart:math' as math;
 
 import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 
 class LatLngBounds {
-  LatLng? _sw;
-  LatLng? _ne;
+  google_maps.LatLng? _sw;
+  google_maps.LatLng? _ne;
 
-  LatLngBounds([LatLng? corner1, LatLng? corner2]) {
+  LatLngBounds([google_maps.LatLng? corner1, google_maps.LatLng? corner2]) {
     extend(corner1);
     extend(corner2);
   }
 
-  LatLngBounds.fromPoints(List<LatLng> points) {
+  //these two functions added as I've used another LatLng reference so it wouldn't exist in LatLng for google maps
+  double latitudeInRad(point) {
+    return degToRadian(point[0]);
+  }
+
+  double longitudeInRad(point) {
+    return degToRadian(point[1]);
+  }
+
+  LatLngBounds.fromPoints(List<google_maps.LatLng> points) {
     if (points.isNotEmpty) {
       num? minX;
       num? maxX;
@@ -19,8 +29,8 @@ class LatLngBounds {
       num? maxY;
 
       for (var point in points) {
-        num x = point.longitudeInRad;
-        num y = point.latitudeInRad;
+        num x = latitudeInRad(point);
+        num y = longitudeInRad(point);
 
         if (minX == null || minX > x) {
           minX = x;
@@ -39,12 +49,14 @@ class LatLngBounds {
         }
       }
 
-      _sw = LatLng(radianToDeg(minY as double), radianToDeg(minX as double));
-      _ne = LatLng(radianToDeg(maxY as double), radianToDeg(maxX as double));
+      _sw = google_maps.LatLng(
+          radianToDeg(minY as double), radianToDeg(minX as double));
+      _ne = google_maps.LatLng(
+          radianToDeg(maxY as double), radianToDeg(maxX as double));
     }
   }
 
-  void extend(LatLng? latlng) {
+  void extend(google_maps.LatLng? latlng) {
     if (latlng == null) {
       return;
     }
@@ -55,15 +67,19 @@ class LatLngBounds {
     _extend(bounds._sw, bounds._ne);
   }
 
-  void _extend(LatLng? sw2, LatLng? ne2) {
+  void _extend(google_maps.LatLng? sw2, google_maps.LatLng? ne2) {
     if (_sw == null && _ne == null) {
-      _sw = LatLng(sw2!.latitude, sw2.longitude);
-      _ne = LatLng(ne2!.latitude, ne2.longitude);
+      _sw = google_maps.LatLng(sw2!.latitude, sw2.longitude);
+      _ne = google_maps.LatLng(ne2!.latitude, ne2.longitude);
     } else {
-      _sw!.latitude = math.min(sw2!.latitude, _sw!.latitude);
-      _sw!.longitude = math.min(sw2.longitude, _sw!.longitude);
-      _ne!.latitude = math.max(ne2!.latitude, _ne!.latitude);
-      _ne!.longitude = math.max(ne2.longitude, _ne!.longitude);
+      _sw = google_maps.LatLng(math.min(sw2!.latitude, _sw!.latitude),
+          math.min(sw2.longitude, _sw!.longitude));
+      // _sw!.latitude = math.min(sw2!.latitude, _sw!.latitude);
+      // _sw!.longitude = math.min(sw2.longitude, _sw!.longitude);
+      _ne = google_maps.LatLng(math.max(ne2!.latitude, _ne!.latitude),
+          math.max(ne2.longitude, _ne!.longitude));
+      // _ne!.latitude = math.max(ne2!.latitude, _ne!.latitude);
+      // _ne!.longitude = math.max(ne2.longitude, _ne!.longitude);
     }
   }
 
@@ -72,16 +88,16 @@ class LatLngBounds {
   double get east => northEast!.longitude;
   double get north => northEast!.latitude;
 
-  LatLng? get southWest => _sw;
-  LatLng? get northEast => _ne;
-  LatLng get northWest => LatLng(north, west);
-  LatLng get southEast => LatLng(south, east);
+  google_maps.LatLng? get southWest => _sw;
+  google_maps.LatLng? get northEast => _ne;
+  google_maps.LatLng get northWest => google_maps.LatLng(north, west);
+  google_maps.LatLng get southEast => google_maps.LatLng(south, east);
 
   bool get isValid {
     return _sw != null && _ne != null;
   }
 
-  bool contains(LatLng? point) {
+  bool contains(google_maps.LatLng? point) {
     if (!isValid) {
       return false;
     }
@@ -118,7 +134,9 @@ class LatLngBounds {
     var heightBuffer = (_sw!.latitude - _ne!.latitude).abs() * bufferRatio;
     var widthBuffer = (_sw!.longitude - _ne!.longitude).abs() * bufferRatio;
 
-    _sw = LatLng(_sw!.latitude - heightBuffer, _sw!.longitude - widthBuffer);
-    _ne = LatLng(_ne!.latitude + heightBuffer, _ne!.longitude + widthBuffer);
+    _sw = google_maps.LatLng(
+        _sw!.latitude - heightBuffer, _sw!.longitude - widthBuffer);
+    _ne = google_maps.LatLng(
+        _ne!.latitude + heightBuffer, _ne!.longitude + widthBuffer);
   }
 }

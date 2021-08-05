@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+// import 'package:latlong2/latlong.dart';
 
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 import '../widgets/drawer.dart';
 
 class OverlayImagePage extends StatelessWidget {
@@ -11,7 +12,8 @@ class OverlayImagePage extends StatelessWidget {
   Widget build(BuildContext context) {
     var overlayImages = <OverlayImage>[
       OverlayImage(
-          bounds: LatLngBounds(LatLng(51.5, -0.09), LatLng(48.8566, 2.3522)),
+          bounds: LatLngBounds(google_maps.LatLng(51.5, -0.09),
+              google_maps.LatLng(48.8566, 2.3522)),
           opacity: 0.8,
           imageProvider: NetworkImage(
               'https://images.pexels.com/photos/231009/pexels-photo-231009.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=600')),
@@ -31,7 +33,7 @@ class OverlayImagePage extends StatelessWidget {
             Flexible(
               child: FlutterMap(
                 options: MapOptions(
-                  center: LatLng(51.5, -0.09),
+                  center: google_maps.LatLng(51.5, -0.09),
                   zoom: 6.0,
                 ),
                 layers: [

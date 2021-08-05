@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+// import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 
 import '../widgets/drawer.dart';
 
@@ -62,7 +63,7 @@ class _LiveLocationPageState extends State<LiveLocationPage> {
                 // If Live Update is enabled, move map center
                 if (_liveUpdate) {
                   _mapController.move(
-                      LatLng(_currentLocation!.latitude!,
+                      google_maps.LatLng(_currentLocation!.latitude!,
                           _currentLocation!.longitude!),
                       _mapController.zoom);
                 }
@@ -90,15 +91,15 @@ class _LiveLocationPageState extends State<LiveLocationPage> {
 
   @override
   Widget build(BuildContext context) {
-    LatLng currentLatLng;
+    google_maps.LatLng currentLatLng;
 
     // Until currentLocation is initially updated, Widget can locate to 0, 0
     // by default or store previous location value to show.
     if (_currentLocation != null) {
-      currentLatLng =
-          LatLng(_currentLocation!.latitude!, _currentLocation!.longitude!);
+      currentLatLng = google_maps.LatLng(
+          _currentLocation!.latitude!, _currentLocation!.longitude!);
     } else {
-      currentLatLng = LatLng(0, 0);
+      currentLatLng = google_maps.LatLng(0, 0);
     }
 
     var markers = <Marker>[
@@ -135,8 +136,8 @@ class _LiveLocationPageState extends State<LiveLocationPage> {
               child: FlutterMap(
                 mapController: _mapController,
                 options: MapOptions(
-                  center:
-                      LatLng(currentLatLng.latitude, currentLatLng.longitude),
+                  center: google_maps.LatLng(
+                      currentLatLng.latitude, currentLatLng.longitude),
                   zoom: 5.0,
                   interactiveFlags: interActiveFlags,
                 ),

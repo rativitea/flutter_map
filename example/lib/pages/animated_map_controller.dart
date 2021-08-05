@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+// import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 
 import '../widgets/drawer.dart';
 
@@ -25,9 +26,9 @@ class AnimatedMapControllerPageState extends State<AnimatedMapControllerPage>
   // See https://github.com/flutter/flutter/issues/14317#issuecomment-361085869
   // This project didn't require that change, so YMMV.
 
-  static LatLng london = LatLng(51.5, -0.09);
-  static LatLng paris = LatLng(48.8566, 2.3522);
-  static LatLng dublin = LatLng(53.3498, -6.2603);
+  static google_maps.LatLng london = google_maps.LatLng(51.5, -0.09);
+  static google_maps.LatLng paris = google_maps.LatLng(48.8566, 2.3522);
+  static google_maps.LatLng dublin = google_maps.LatLng(53.3498, -6.2603);
 
   late final MapController mapController;
 
@@ -37,7 +38,7 @@ class AnimatedMapControllerPageState extends State<AnimatedMapControllerPage>
     mapController = MapController();
   }
 
-  void _animatedMapMove(LatLng destLocation, double destZoom) {
+  void _animatedMapMove(google_maps.LatLng destLocation, double destZoom) {
     // Create some tweens. These serve to split up the transition from one location to another.
     // In our case, we want to split the transition be<tween> our current map center and the destination.
     final _latTween = Tween<double>(
@@ -56,7 +57,8 @@ class AnimatedMapControllerPageState extends State<AnimatedMapControllerPage>
 
     controller.addListener(() {
       mapController.move(
-          LatLng(_latTween.evaluate(animation), _lngTween.evaluate(animation)),
+          google_maps.LatLng(
+              _latTween.evaluate(animation), _lngTween.evaluate(animation)),
           _zoomTween.evaluate(animation));
     });
 
@@ -163,7 +165,7 @@ class AnimatedMapControllerPageState extends State<AnimatedMapControllerPage>
               child: FlutterMap(
                 mapController: mapController,
                 options: MapOptions(
-                    center: LatLng(51.5, -0.09),
+                    center: google_maps.LatLng(51.5, -0.09),
                     zoom: 5.0,
                     maxZoom: 10.0,
                     minZoom: 3.0),

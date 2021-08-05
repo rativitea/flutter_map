@@ -4,7 +4,8 @@ import 'dart:ui' as ui;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/src/map/map.dart';
-import 'package:latlong2/latlong.dart';
+// import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 
 class PolylineLayerOptions extends LayerOptions {
   final List<Polyline> polylines;
@@ -25,7 +26,7 @@ class PolylineLayerOptions extends LayerOptions {
 }
 
 class Polyline {
-  final List<LatLng> points;
+  final List<google_maps.LatLng> points;
   final List<Offset> offsets = [];
   final double strokeWidth;
   final Color color;
@@ -110,7 +111,8 @@ class PolylineLayer extends StatelessWidget {
     );
   }
 
-  void _fillOffsets(final List<Offset> offsets, final List<LatLng> points) {
+  void _fillOffsets(
+      final List<Offset> offsets, final List<google_maps.LatLng> points) {
     for (var i = 0, len = points.length; i < len; ++i) {
       var point = points[i];
 

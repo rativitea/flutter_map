@@ -1,4 +1,5 @@
-import 'package:latlong2/latlong.dart';
+// import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 
 enum MapEventSource {
   mapController,
@@ -24,7 +25,7 @@ abstract class MapEvent {
   // who / what issued the event
   final MapEventSource source;
   // current center when event is emitted
-  final LatLng center;
+  final google_maps.LatLng center;
   // current zoom when event is emitted
   final double zoom;
 
@@ -32,36 +33,36 @@ abstract class MapEvent {
 }
 
 abstract class MapEventWithMove extends MapEvent {
-  final LatLng targetCenter;
+  final google_maps.LatLng targetCenter;
   final double targetZoom;
 
   MapEventWithMove({
     required this.targetCenter,
     required this.targetZoom,
     required MapEventSource source,
-    required LatLng center,
+    required google_maps.LatLng center,
     required double zoom,
   }) : super(source: source, center: center, zoom: zoom);
 }
 
 class MapEventTap extends MapEvent {
-  final LatLng tapPosition;
+  final google_maps.LatLng tapPosition;
 
   MapEventTap({
     required this.tapPosition,
     required MapEventSource source,
-    required LatLng center,
+    required google_maps.LatLng center,
     required double zoom,
   }) : super(source: source, center: center, zoom: zoom);
 }
 
 class MapEventLongPress extends MapEvent {
-  final LatLng tapPosition;
+  final google_maps.LatLng tapPosition;
 
   MapEventLongPress({
     required this.tapPosition,
     required MapEventSource source,
-    required LatLng center,
+    required google_maps.LatLng center,
     required double zoom,
   }) : super(source: source, center: center, zoom: zoom);
 }
@@ -71,10 +72,10 @@ class MapEventMove extends MapEventWithMove {
 
   MapEventMove({
     this.id,
-    required LatLng targetCenter,
+    required google_maps.LatLng targetCenter,
     required double targetZoom,
     required MapEventSource source,
-    required LatLng center,
+    required google_maps.LatLng center,
     required double zoom,
   }) : super(
           targetCenter: targetCenter,
@@ -88,7 +89,7 @@ class MapEventMove extends MapEventWithMove {
 class MapEventMoveStart extends MapEvent {
   MapEventMoveStart(
       {required MapEventSource source,
-      required LatLng center,
+      required google_maps.LatLng center,
       required double zoom})
       : super(source: source, center: center, zoom: zoom);
 }
@@ -96,17 +97,17 @@ class MapEventMoveStart extends MapEvent {
 class MapEventMoveEnd extends MapEvent {
   MapEventMoveEnd(
       {required MapEventSource source,
-      required LatLng center,
+      required google_maps.LatLng center,
       required double zoom})
       : super(source: source, center: center, zoom: zoom);
 }
 
 class MapEventFlingAnimation extends MapEventWithMove {
   MapEventFlingAnimation({
-    required LatLng targetCenter,
+    required google_maps.LatLng targetCenter,
     required double targetZoom,
     required MapEventSource source,
-    required LatLng center,
+    required google_maps.LatLng center,
     required double zoom,
   }) : super(
           targetCenter: targetCenter,
@@ -122,7 +123,7 @@ class MapEventFlingAnimation extends MapEventWithMove {
 class MapEventFlingAnimationNotStarted extends MapEvent {
   MapEventFlingAnimationNotStarted(
       {required MapEventSource source,
-      required LatLng center,
+      required google_maps.LatLng center,
       required double zoom})
       : super(source: source, center: center, zoom: zoom);
 }
@@ -130,7 +131,7 @@ class MapEventFlingAnimationNotStarted extends MapEvent {
 class MapEventFlingAnimationStart extends MapEvent {
   MapEventFlingAnimationStart(
       {required MapEventSource source,
-      required LatLng center,
+      required google_maps.LatLng center,
       required double zoom})
       : super(source: source, center: center, zoom: zoom);
 }
@@ -138,17 +139,17 @@ class MapEventFlingAnimationStart extends MapEvent {
 class MapEventFlingAnimationEnd extends MapEvent {
   MapEventFlingAnimationEnd(
       {required MapEventSource source,
-      required LatLng center,
+      required google_maps.LatLng center,
       required double zoom})
       : super(source: source, center: center, zoom: zoom);
 }
 
 class MapEventDoubleTapZoom extends MapEventWithMove {
   MapEventDoubleTapZoom({
-    required LatLng targetCenter,
+    required google_maps.LatLng targetCenter,
     required double targetZoom,
     required MapEventSource source,
-    required LatLng center,
+    required google_maps.LatLng center,
     required double zoom,
   }) : super(
           targetCenter: targetCenter,
@@ -162,7 +163,7 @@ class MapEventDoubleTapZoom extends MapEventWithMove {
 class MapEventDoubleTapZoomStart extends MapEvent {
   MapEventDoubleTapZoomStart(
       {required MapEventSource source,
-      required LatLng center,
+      required google_maps.LatLng center,
       required double zoom})
       : super(source: source, center: center, zoom: zoom);
 }
@@ -170,7 +171,7 @@ class MapEventDoubleTapZoomStart extends MapEvent {
 class MapEventDoubleTapZoomEnd extends MapEvent {
   MapEventDoubleTapZoomEnd(
       {required MapEventSource source,
-      required LatLng center,
+      required google_maps.LatLng center,
       required double zoom})
       : super(source: source, center: center, zoom: zoom);
 }
@@ -185,7 +186,7 @@ class MapEventRotate extends MapEvent {
     required this.currentRotation,
     required this.targetRotation,
     required MapEventSource source,
-    required LatLng center,
+    required google_maps.LatLng center,
     required double zoom,
   }) : super(source: source, center: center, zoom: zoom);
 }
@@ -193,7 +194,7 @@ class MapEventRotate extends MapEvent {
 class MapEventRotateStart extends MapEvent {
   MapEventRotateStart(
       {required MapEventSource source,
-      required LatLng center,
+      required google_maps.LatLng center,
       required double zoom})
       : super(source: source, center: center, zoom: zoom);
 }
@@ -201,7 +202,7 @@ class MapEventRotateStart extends MapEvent {
 class MapEventRotateEnd extends MapEvent {
   MapEventRotateEnd(
       {required MapEventSource source,
-      required LatLng center,
+      required google_maps.LatLng center,
       required double zoom})
       : super(source: source, center: center, zoom: zoom);
 }

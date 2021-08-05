@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
-
+// import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 import '../widgets/drawer.dart';
 
 const maxMarkersCount = 5000;
@@ -34,7 +34,7 @@ class _ManyMarkersPageState extends State<ManyMarkersPage> {
       for (var x = 0; x < maxMarkersCount; x++) {
         allMarkers.add(
           Marker(
-            point: LatLng(
+            point: google_maps.LatLng(
               doubleInRange(r, 37, 55),
               doubleInRange(r, -9, 30),
             ),
@@ -72,7 +72,7 @@ class _ManyMarkersPageState extends State<ManyMarkersPage> {
           Flexible(
             child: FlutterMap(
               options: MapOptions(
-                center: LatLng(50, 20),
+                center: google_maps.LatLng(50, 20),
                 zoom: 5.0,
                 interactiveFlags: InteractiveFlag.all - InteractiveFlag.rotate,
               ),

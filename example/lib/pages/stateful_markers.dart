@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
-
+// import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 import '../widgets/drawer.dart';
 
 class StatefulMarkersPage extends StatefulWidget {
@@ -37,7 +37,7 @@ class _StatefulMarkersPageState extends State<StatefulMarkersPage> {
     _markers.add(Marker(
         width: 40.0,
         height: 40.0,
-        point: LatLng(
+        point: google_maps.LatLng(
             _random.nextDouble() * 10 + 48, _random.nextDouble() * 10 - 6),
         builder: (ctx) => _ColorMarker(),
         key: ValueKey(key)));
@@ -59,7 +59,7 @@ class _StatefulMarkersPageState extends State<StatefulMarkersPage> {
             Flexible(
               child: FlutterMap(
                 options: MapOptions(
-                  center: LatLng(51.5, -0.09),
+                  center: google_maps.LatLng(51.5, -0.09),
                   zoom: 5.0,
                 ),
                 layers: [

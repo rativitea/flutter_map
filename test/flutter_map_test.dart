@@ -4,8 +4,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:latlong2/latlong.dart';
+// import 'package:latlong2/latlong.dart';
 import 'package:mockito/mockito.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 
 class MockHttpClientResponse extends Mock implements HttpClientResponse {
   final _stream = readFile();
@@ -73,7 +74,7 @@ class _TestAppState extends State<TestApp> {
     Marker(
       width: 80.0,
       height: 80.0,
-      point: LatLng(45.5231, -122.6765),
+      point: google_maps.LatLng(45.5231, -122.6765),
       builder: (ctx) => Container(
         child: FlutterLogo(),
       ),
@@ -81,7 +82,7 @@ class _TestAppState extends State<TestApp> {
     Marker(
       width: 80.0,
       height: 80.0,
-      point: LatLng(40, -120), // not visible
+      point: google_maps.LatLng(40, -120), // not visible
       builder: (ctx) => Container(
         child: FlutterLogo(),
       ),
@@ -103,7 +104,7 @@ class _TestAppState extends State<TestApp> {
             height: 200,
             child: FlutterMap(
               options: MapOptions(
-                center: LatLng(45.5231, -122.6765),
+                center: google_maps.LatLng(45.5231, -122.6765),
                 zoom: 13.0,
               ),
               layers: [

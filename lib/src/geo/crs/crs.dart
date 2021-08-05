@@ -2,7 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter_map/src/core/bounds.dart';
 import 'package:flutter_map/src/core/point.dart';
-import 'package:latlong2/latlong.dart';
+// import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 import 'package:meta/meta.dart';
 import 'package:proj4dart/proj4dart.dart' as proj4;
 import 'package:tuple/tuple.dart';
@@ -23,7 +24,7 @@ abstract class Crs {
 
   /// Converts a point on the sphere surface (with a certain zoom) in a
   /// map point.
-  CustomPoint latLngToPoint(LatLng latlng, double zoom) {
+  CustomPoint latLngToPoint(google_maps.LatLng latlng, double zoom) {
     try {
       var projectedPoint = projection.project(latlng);
       var scale = this.scale(zoom);
@@ -34,7 +35,7 @@ abstract class Crs {
   }
 
   /// Converts a map point to the sphere coordinate (at a certain zoom).
-  LatLng? pointToLatLng(CustomPoint point, double zoom) {
+  google_maps.LatLng? pointToLatLng(CustomPoint point, double zoom) {
     var scale = this.scale(zoom);
     var untransformedPoint =
         transformation.untransform(point, scale.toDouble());
@@ -236,7 +237,7 @@ class Proj4Crs extends Crs {
   /// Converts a point on the sphere surface (with a certain zoom) in a
   /// map point.
   @override
-  CustomPoint latLngToPoint(LatLng latlng, double zoom) {
+  CustomPoint latLngToPoint(google_maps.LatLng latlng, double zoom) {
     try {
       var projectedPoint = projection.project(latlng);
       var scale = this.scale(zoom);
@@ -250,7 +251,7 @@ class Proj4Crs extends Crs {
 
   /// Converts a map point to the sphere coordinate (at a certain zoom).
   @override
-  LatLng? pointToLatLng(CustomPoint point, double zoom) {
+  google_maps.LatLng? pointToLatLng(CustomPoint point, double zoom) {
     var scale = this.scale(zoom);
     var transformation = _getTransformationByZoom(zoom);
 
@@ -346,9 +347,9 @@ abstract class Projection {
 
   Bounds<double>? get bounds;
 
-  CustomPoint project(LatLng latlng);
+  CustomPoint project(google_maps.LatLng latlng);
 
-  LatLng unproject(CustomPoint point);
+  google_maps.LatLng unproject(CustomPoint point);
 
   double _inclusive(Comparable start, Comparable end, double value) {
     if (value.compareTo(start as num) < 0) return start as double;
@@ -378,13 +379,13 @@ class _LonLat extends Projection {
   Bounds<double> get bounds => _bounds;
 
   @override
-  CustomPoint project(LatLng latlng) {
+  CustomPoint project(google_maps.LatLng latlng) {
     return CustomPoint(latlng.longitude, latlng.latitude);
   }
 
   @override
-  LatLng unproject(CustomPoint point) {
-    return LatLng(
+  google_maps.LatLng unproject(CustomPoint point) {
+    return google_maps.LatLng(
         inclusiveLat(point.y as double), inclusiveLng(point.x as double));
   }
 }
@@ -404,7 +405,7 @@ class SphericalMercator extends Projection {
   Bounds<double> get bounds => _bounds;
 
   @override
-  CustomPoint project(LatLng latlng) {
+  CustomPoint project(google_maps.LatLng latlng) {
     var d = math.pi / 180;
     var max = maxLatitude;
     var lat = math.max(math.min(max, latlng.latitude), -max);
@@ -415,9 +416,9 @@ class SphericalMercator extends Projection {
   }
 
   @override
-  LatLng unproject(CustomPoint point) {
+  google_maps.LatLng unproject(CustomPoint point) {
     var d = 180 / math.pi;
-    return LatLng(
+    return google_maps.LatLng(
         inclusiveLat(
             (2 * math.atan(math.exp(point.y / r)) - (math.pi / 2)) * d),
         inclusiveLng(point.x * d / r));
@@ -438,7 +439,7 @@ class _Proj4Projection extends Projection {
   }) : epsg4326 = proj4.Projection.WGS84;
 
   @override
-  CustomPoint project(LatLng latlng) {
+  CustomPoint project(google_maps.LatLng latlng) {
     var point = epsg4326.transform(
         proj4Projection, proj4.Point(x: latlng.longitude, y: latlng.latitude));
 
@@ -446,11 +447,11 @@ class _Proj4Projection extends Projection {
   }
 
   @override
-  LatLng unproject(CustomPoint point) {
+  google_maps.LatLng unproject(CustomPoint point) {
     var point2 = proj4Projection.transform(
         epsg4326, proj4.Point(x: point.x as double, y: point.y as double));
 
-    return LatLng(inclusiveLat(point2.y), inclusiveLng(point2.x));
+    return google_maps.LatLng(inclusiveLat(point2.y), inclusiveLng(point2.x));
   }
 }
 

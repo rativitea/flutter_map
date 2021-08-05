@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/plugin_api.dart';
-import 'package:latlong2/latlong.dart';
-
+// import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 import '../widgets/drawer.dart';
 import 'scale_layer_plugin_option.dart';
 
@@ -20,7 +20,7 @@ class PluginScaleBar extends StatelessWidget {
             Flexible(
               child: FlutterMap(
                 options: MapOptions(
-                  center: LatLng(51.5, -0.09),
+                  center: google_maps.LatLng(51.5, -0.09),
                   zoom: 5.0,
                   plugins: [
                     ScaleLayerPlugin(),

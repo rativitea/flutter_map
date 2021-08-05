@@ -8,6 +8,7 @@ import 'package:flutter_map/src/core/center_zoom.dart';
 import 'package:flutter_map/src/core/point.dart';
 import 'package:flutter_map/src/map/map_state_widget.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 
 class MapControllerImpl implements MapController {
   final Completer<Null> _readyCompleter = Completer<Null>();
@@ -30,14 +31,15 @@ class MapControllerImpl implements MapController {
   }
 
   @override
-  MoveAndRotateResult moveAndRotate(LatLng center, double zoom, double degree,
+  MoveAndRotateResult moveAndRotate(
+      google_maps.LatLng center, double zoom, double degree,
       {String? id}) {
     return _state.moveAndRotate(center, zoom, degree,
         source: MapEventSource.mapController, id: id!);
   }
 
   @override
-  bool move(LatLng center, double zoom, {String? id}) {
+  bool move(google_maps.LatLng center, double zoom, {String? id}) {
     return _state.move(center, zoom,
         id: id, source: MapEventSource.mapController);
   }
@@ -52,7 +54,7 @@ class MapControllerImpl implements MapController {
   }
 
   @override
-  LatLng get center => _state.center;
+  google_maps.LatLng get center => _state.center;
 
   @override
   LatLngBounds? get bounds => _state.bounds;
@@ -92,7 +94,7 @@ class MapState {
 
   double get rotationRad => _rotationRad;
 
-  LatLng? _lastCenter;
+  google_maps.LatLng? _lastCenter;
   LatLngBounds? _lastBounds;
   Bounds? _lastPixelBounds;
   late CustomPoint _pixelOrigin;
@@ -157,7 +159,7 @@ class MapState {
     _pixelOrigin = getNewPixelOrigin(_lastCenter!);
   }
 
-  LatLng get center => getCenter();
+  google_maps.LatLng get center => getCenter();
 
   LatLngBounds get bounds => getBounds();
 
@@ -171,8 +173,8 @@ class MapState {
     }
   }
 
-  void _handleMoveEmit(LatLng targetCenter, double targetZoom, hasGesture,
-      MapEventSource source, String? id) {
+  void _handleMoveEmit(google_maps.LatLng targetCenter, double targetZoom,
+      hasGesture, MapEventSource source, String? id) {
     if (source == MapEventSource.flingAnimationController) {
       emitMapEvent(
         MapEventFlingAnimation(
@@ -266,7 +268,8 @@ class MapState {
     return false;
   }
 
-  MoveAndRotateResult moveAndRotate(LatLng center, double zoom, double degree,
+  MoveAndRotateResult moveAndRotate(
+      google_maps.LatLng center, double zoom, double degree,
       {required MapEventSource source, required String id}) {
     final moveSucc =
         move(center, zoom, id: id, source: source, callOnMoveSink: false);
@@ -280,7 +283,7 @@ class MapState {
     return MoveAndRotateResult(moveSucc, rotateSucc);
   }
 
-  bool move(LatLng center, double zoom,
+  bool move(google_maps.LatLng center, double zoom,
       {hasGesture = false,
       callOnMoveSink = true,
       required MapEventSource source,
@@ -340,7 +343,7 @@ class MapState {
     move(target.center, target.zoom, source: MapEventSource.fitBounds);
   }
 
-  LatLng getCenter() {
+  google_maps.LatLng getCenter() {
     if (_lastCenter != null) {
       return _lastCenter!;
     }
@@ -413,17 +416,17 @@ class MapState {
     return math.max(min, math.min(max, zoom));
   }
 
-  CustomPoint project(LatLng latlng, [double? zoom]) {
+  CustomPoint project(google_maps.LatLng latlng, [double? zoom]) {
     zoom ??= _zoom;
     return options.crs.latLngToPoint(latlng, zoom);
   }
 
-  LatLng unproject(CustomPoint point, [double? zoom]) {
+  google_maps.LatLng unproject(CustomPoint point, [double? zoom]) {
     zoom ??= _zoom;
     return options.crs.pointToLatLng(point, zoom)!;
   }
 
-  LatLng layerPointToLatLng(CustomPoint point) {
+  google_maps.LatLng layerPointToLatLng(CustomPoint point) {
     return unproject(point);
   }
 
@@ -451,7 +454,7 @@ class MapState {
     return _pixelOrigin;
   }
 
-  CustomPoint getNewPixelOrigin(LatLng center, [double? zoom]) {
+  CustomPoint getNewPixelOrigin(google_maps.LatLng center, [double? zoom]) {
     var viewHalf = size / 2.0;
     return (project(center, zoom) - viewHalf).round();
   }

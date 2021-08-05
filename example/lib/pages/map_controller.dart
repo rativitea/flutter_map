@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+// import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 
 import '../widgets/drawer.dart';
 
@@ -17,9 +18,9 @@ class MapControllerPage extends StatefulWidget {
 }
 
 class MapControllerPageState extends State<MapControllerPage> {
-  static LatLng london = LatLng(51.5, -0.09);
-  static LatLng paris = LatLng(48.8566, 2.3522);
-  static LatLng dublin = LatLng(53.3498, -6.2603);
+  static google_maps.LatLng london = google_maps.LatLng(51.5, -0.09);
+  static google_maps.LatLng paris = google_maps.LatLng(48.8566, 2.3522);
+  static google_maps.LatLng dublin = google_maps.LatLng(53.3498, -6.2603);
 
   late final MapController mapController;
   double rotation = 0.0;
@@ -155,7 +156,7 @@ class MapControllerPageState extends State<MapControllerPage> {
               child: FlutterMap(
                 mapController: mapController,
                 options: MapOptions(
-                  center: LatLng(51.5, -0.09),
+                  center: google_maps.LatLng(51.5, -0.09),
                   zoom: 5.0,
                   maxZoom: 5.0,
                   minZoom: 3.0,
@@ -229,7 +230,8 @@ class _CurrentLocationState extends State<CurrentLocation> {
     try {
       var currentLocation = await location.getLocation();
       var moved = widget.mapController.move(
-        LatLng(currentLocation.latitude!, currentLocation.longitude!),
+        google_maps.LatLng(
+            currentLocation.latitude!, currentLocation.longitude!),
         18,
         id: _eventKey.toString(),
       );

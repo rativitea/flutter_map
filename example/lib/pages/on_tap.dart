@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+// import 'package:latlong2/latlong.dart';
 
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 import '../widgets/drawer.dart';
 
 class OnTapPage extends StatefulWidget {
@@ -14,9 +15,9 @@ class OnTapPage extends StatefulWidget {
 }
 
 class OnTapPageState extends State<OnTapPage> {
-  static LatLng london = LatLng(51.5, -0.09);
-  static LatLng paris = LatLng(48.8566, 2.3522);
-  static LatLng dublin = LatLng(53.3498, -6.2603);
+  static google_maps.LatLng london = google_maps.LatLng(51.5, -0.09);
+  static google_maps.LatLng paris = google_maps.LatLng(48.8566, 2.3522);
+  static google_maps.LatLng dublin = google_maps.LatLng(53.3498, -6.2603);
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +82,7 @@ class OnTapPageState extends State<OnTapPage> {
             Flexible(
               child: FlutterMap(
                 options: MapOptions(
-                  center: LatLng(51.5, -0.09),
+                  center: google_maps.LatLng(51.5, -0.09),
                   zoom: 5.0,
                   maxZoom: 5.0,
                   minZoom: 3.0,

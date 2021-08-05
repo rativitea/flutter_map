@@ -11,8 +11,9 @@ import 'package:flutter_map/src/geo/crs/crs.dart';
 import 'package:flutter_map/src/layer/tile_builder/tile_builder.dart';
 import 'package:flutter_map/src/layer/tile_provider/tile_provider.dart';
 import 'package:flutter_map/src/map/map.dart';
-import 'package:latlong2/latlong.dart';
+// import 'package:latlong2/latlong.dart';
 import 'package:tuple/tuple.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 
 import 'layer.dart';
 
@@ -444,7 +445,7 @@ class _TileLayerState extends State<TileLayer> with TickerProviderStateMixin {
   //ignore: unused_field
   Level? _level;
   StreamSubscription? _moveSub;
-  StreamController<LatLng?>? _throttleUpdate;
+  StreamController<google_maps.LatLng?>? _throttleUpdate;
   late CustomPoint _tileSize;
 
   final Map<String, Tile> _tiles = {};
@@ -527,10 +528,10 @@ class _TileLayerState extends State<TileLayer> with TickerProviderStateMixin {
     if (options.updateInterval == null) {
       _throttleUpdate = null;
     } else {
-      _throttleUpdate = StreamController<LatLng?>(sync: true);
+      _throttleUpdate = StreamController<google_maps.LatLng?>(sync: true);
       _throttleUpdate!.stream
           .transform(
-            util.throttleStreamTransformerWithTrailingCall<LatLng?>(
+            util.throttleStreamTransformerWithTrailingCall<google_maps.LatLng?>(
               options.updateInterval!,
             ),
           )
@@ -800,7 +801,7 @@ class _TileLayerState extends State<TileLayer> with TickerProviderStateMixin {
     return zoom;
   }
 
-  void _setView(LatLng center, double zoom) {
+  void _setView(google_maps.LatLng center, double zoom) {
     double? tileZoom = _clampZoom(zoom.roundToDouble());
     if ((tileZoom > options.maxZoom) || (tileZoom < options.minZoom)) {
       tileZoom = null;
@@ -820,13 +821,13 @@ class _TileLayerState extends State<TileLayer> with TickerProviderStateMixin {
     _pruneTiles();
   }
 
-  void _setZoomTransforms(LatLng center, double zoom) {
+  void _setZoomTransforms(google_maps.LatLng center, double zoom) {
     for (var i in _levels.keys) {
       _setZoomTransform(_levels[i]!, center, zoom);
     }
   }
 
-  void _setZoomTransform(Level level, LatLng center, double zoom) {
+  void _setZoomTransform(Level level, google_maps.LatLng center, double zoom) {
     var scale = map.getZoomScale(zoom, level.zoom);
     var pixelOrigin = map.getNewPixelOrigin(center, zoom).round();
     if (level.origin == null) {
@@ -851,10 +852,16 @@ class _TileLayerState extends State<TileLayer> with TickerProviderStateMixin {
     // wrapping
     _wrapX = crs.wrapLng;
     if (_wrapX != null) {
-      var first = (map.project(LatLng(0.0, crs.wrapLng!.item1), tileZoom).x /
+      var first = (map
+                  .project(
+                      google_maps.LatLng(0.0, crs.wrapLng!.item1), tileZoom)
+                  .x /
               tileSize.x)
           .floorToDouble();
-      var second = (map.project(LatLng(0.0, crs.wrapLng!.item2), tileZoom).x /
+      var second = (map
+                  .project(
+                      google_maps.LatLng(0.0, crs.wrapLng!.item2), tileZoom)
+                  .x /
               tileSize.y)
           .ceilToDouble();
       _wrapX = Tuple2(first, second);
@@ -862,10 +869,16 @@ class _TileLayerState extends State<TileLayer> with TickerProviderStateMixin {
 
     _wrapY = crs.wrapLat;
     if (_wrapY != null) {
-      var first = (map.project(LatLng(crs.wrapLat!.item1, 0.0), tileZoom).y /
+      var first = (map
+                  .project(
+                      google_maps.LatLng(crs.wrapLat!.item1, 0.0), tileZoom)
+                  .y /
               tileSize.x)
           .floorToDouble();
-      var second = (map.project(LatLng(crs.wrapLat!.item2, 0.0), tileZoom).y /
+      var second = (map
+                  .project(
+                      google_maps.LatLng(crs.wrapLat!.item2, 0.0), tileZoom)
+                  .y /
               tileSize.y)
           .ceilToDouble();
       _wrapY = Tuple2(first, second);
@@ -906,7 +919,7 @@ class _TileLayerState extends State<TileLayer> with TickerProviderStateMixin {
     }
   }
 
-  Bounds _getTiledPixelBounds(LatLng center) {
+  Bounds _getTiledPixelBounds(google_maps.LatLng center) {
     var scale = map.getZoomScale(map.zoom, _tileZoom);
     var pixelCenter = map.project(center, _tileZoom).floor();
     var halfSize = map.size / (scale * 2);
@@ -916,7 +929,7 @@ class _TileLayerState extends State<TileLayer> with TickerProviderStateMixin {
 
   // Private method to load tiles in the grid's active zoom level according to
   // map bounds
-  void _update(LatLng? center) {
+  void _update(google_maps.LatLng? center) {
     if (_tileZoom == null) {
       return;
     }

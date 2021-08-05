@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
-
+// import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 import '../widgets/drawer.dart';
 
 class SlidingMapPage extends StatelessWidget {
@@ -24,12 +24,12 @@ class SlidingMapPage extends StatelessWidget {
             Flexible(
               child: FlutterMap(
                 options: MapOptions(
-                  center: LatLng(56.704173, 11.543808),
+                  center: google_maps.LatLng(56.704173, 11.543808),
                   minZoom: 12.0,
                   maxZoom: 14.0,
                   zoom: 13.0,
-                  swPanBoundary: LatLng(56.6877, 11.5089),
-                  nePanBoundary: LatLng(56.7378, 11.6644),
+                  swPanBoundary: google_maps.LatLng(56.6877, 11.5089),
+                  nePanBoundary: google_maps.LatLng(56.7378, 11.6644),
                   slideOnBoundaries: true,
                   screenSize: MediaQuery.of(context).size,
                 ),

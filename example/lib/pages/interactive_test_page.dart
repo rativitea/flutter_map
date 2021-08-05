@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
-
+// import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 import '../widgets/drawer.dart';
 
 class InteractiveTestPage extends StatefulWidget {
@@ -170,7 +170,7 @@ class _InteractiveTestPageState extends State<InteractiveTestPage> {
               child: FlutterMap(
                 mapController: mapController,
                 options: MapOptions(
-                  center: LatLng(51.5, -0.09),
+                  center: google_maps.LatLng(51.5, -0.09),
                   zoom: 11.0,
                   interactiveFlags: flags,
                 ),

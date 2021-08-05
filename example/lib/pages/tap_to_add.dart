@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
-
+// import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 import '../widgets/drawer.dart';
 
 class TapToAddPage extends StatefulWidget {
@@ -14,7 +14,7 @@ class TapToAddPage extends StatefulWidget {
 }
 
 class TapToAddPageState extends State<TapToAddPage> {
-  List<LatLng> tappedPoints = [];
+  List<google_maps.LatLng> tappedPoints = [];
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class TapToAddPageState extends State<TapToAddPage> {
             Flexible(
               child: FlutterMap(
                 options: MapOptions(
-                    center: LatLng(45.5231, -122.6765),
+                    center: google_maps.LatLng(45.5231, -122.6765),
                     zoom: 13.0,
                     onTap: _handleTap),
                 layers: [
@@ -61,7 +61,7 @@ class TapToAddPageState extends State<TapToAddPage> {
     );
   }
 
-  void _handleTap(LatLng latlng) {
+  void _handleTap(google_maps.LatLng latlng) {
     setState(() {
       tappedPoints.add(latlng);
     });

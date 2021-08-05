@@ -1,6 +1,7 @@
 import 'dart:math';
 
-import 'package:latlong2/latlong.dart';
+// import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 
 const double piOver180 = pi / 180.0;
 double toDegrees(double radians) {
@@ -11,8 +12,8 @@ double toRadians(double degrees) {
   return degrees * piOver180;
 }
 
-LatLng calculateEndingGlobalCoordinates(
-    LatLng start, double startBearing, double distance) {
+google_maps.LatLng calculateEndingGlobalCoordinates(
+    google_maps.LatLng start, double startBearing, double distance) {
   var mSemiMajorAxis = 6378137.0; //WGS84 major axis
   var mSemiMinorAxis = (1.0 - 1.0 / 298.257223563) * 6378137.0;
   var mFlattening = 1.0 / 298.257223563;
@@ -145,5 +146,5 @@ LatLng calculateEndingGlobalCoordinates(
   latitude = latitude > 90 ? 90 : latitude;
   longitude = longitude < -180 ? -180 : longitude;
   longitude = longitude > 180 ? 180 : longitude;
-  return LatLng(latitude, longitude);
+  return google_maps.LatLng(latitude, longitude);
 }

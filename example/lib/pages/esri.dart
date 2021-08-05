@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
-
+// import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 import '../widgets/drawer.dart';
 
 class EsriPage extends StatelessWidget {
@@ -23,7 +23,7 @@ class EsriPage extends StatelessWidget {
             Flexible(
               child: FlutterMap(
                 options: MapOptions(
-                  center: LatLng(45.5231, -122.6765),
+                  center: google_maps.LatLng(45.5231, -122.6765),
                   zoom: 13.0,
                 ),
                 layers: [

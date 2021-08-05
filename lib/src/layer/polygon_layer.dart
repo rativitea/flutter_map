@@ -4,7 +4,8 @@ import 'dart:ui';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/src/map/map.dart';
-import 'package:latlong2/latlong.dart' hide Path; // conflict with Path from UI
+// import 'package:latlong2/latlong.dart' hide Path; // conflict with Path from UI
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 
 class PolygonLayerOptions extends LayerOptions {
   final List<Polygon> polygons;
@@ -26,9 +27,9 @@ class PolygonLayerOptions extends LayerOptions {
 }
 
 class Polygon {
-  final List<LatLng> points;
+  final List<google_maps.LatLng> points;
   final List<Offset> offsets = [];
-  final List<List<LatLng>>? holePointsList;
+  final List<List<google_maps.LatLng>>? holePointsList;
   final List<List<Offset>>? holeOffsetsList;
   final Color color;
   final double borderStrokeWidth;
@@ -128,7 +129,8 @@ class PolygonLayer extends StatelessWidget {
     );
   }
 
-  void _fillOffsets(final List<Offset> offsets, final List<LatLng> points) {
+  void _fillOffsets(
+      final List<Offset> offsets, final List<google_maps.LatLng> points) {
     for (var i = 0, len = points.length; i < len; ++i) {
       var point = points[i];
 

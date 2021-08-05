@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/plugin_api.dart';
-import 'package:latlong2/latlong.dart';
+// import 'package:latlong2/latlong.dart';
 import 'package:proj4dart/proj4dart.dart' as proj4;
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 
 import '../../widgets/drawer.dart';
 
@@ -127,7 +128,7 @@ class _CustomCrsPageState extends State<CustomCrsPage> {
                 options: MapOptions(
                   // Set the default CRS
                   crs: epsg3413CRS,
-                  center: LatLng(point.x, point.y),
+                  center: google_maps.LatLng(point.x, point.y),
                   zoom: 3.0,
                   // Set maxZoom usually scales.length - 1 OR resolutions.length - 1
                   // but not greater

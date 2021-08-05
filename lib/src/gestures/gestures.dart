@@ -8,6 +8,7 @@ import 'package:flutter_map/src/gestures/interactive_flag.dart';
 import 'package:flutter_map/src/gestures/latlng_tween.dart';
 import 'package:flutter_map/src/map/map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 import 'package:positioned_tap_detector_2/positioned_tap_detector_2.dart';
 
 abstract class MapGestureMixin extends State<FlutterMap>
@@ -37,7 +38,7 @@ abstract class MapGestureMixin extends State<FlutterMap>
   late double _lastScale;
   late Offset _lastFocalLocal;
 
-  late LatLng _mapCenterStart;
+  late google_maps.LatLng _mapCenterStart;
   late double _mapZoomStart;
   late Offset _focalStartLocal;
 
@@ -352,7 +353,7 @@ abstract class MapGestureMixin extends State<FlutterMap>
               newZoom = mapState.zoom;
             }
 
-            LatLng newCenter;
+            google_maps.LatLng newCenter;
             if (hasMove) {
               if (!_pinchMoveStarted && _lastFocalLocal != focalOffset) {
                 _pinchMoveStarted = true;
@@ -545,7 +546,7 @@ abstract class MapGestureMixin extends State<FlutterMap>
     );
   }
 
-  LatLng _offsetToCrs(Offset offset) {
+  google_maps.LatLng _offsetToCrs(Offset offset) {
     final focalStartPt = mapState.project(mapState.center, mapState.zoom);
     final point = (_offsetToPoint(offset) - (mapState.originalSize! / 2.0))
         .rotate(mapState.rotationRad);
@@ -595,7 +596,7 @@ abstract class MapGestureMixin extends State<FlutterMap>
     return delta / math.max(weightX, weightY);
   }
 
-  void _startDoubleTapAnimation(double newZoom, LatLng newCenter) {
+  void _startDoubleTapAnimation(double newZoom, google_maps.LatLng newCenter) {
     _doubleTapZoomAnimation = Tween<double>(begin: mapState.zoom, end: newZoom)
         .chain(CurveTween(curve: Curves.fastOutSlowIn))
         .animate(_doubleTapController);

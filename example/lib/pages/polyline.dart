@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+// import 'package:latlong2/latlong.dart';
 
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 import '../widgets/drawer.dart';
 
 class PolylinePage extends StatelessWidget {
@@ -9,16 +10,16 @@ class PolylinePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var points = <LatLng>[
-      LatLng(51.5, -0.09),
-      LatLng(53.3498, -6.2603),
-      LatLng(48.8566, 2.3522),
+    var points = <google_maps.LatLng>[
+      google_maps.LatLng(51.5, -0.09),
+      google_maps.LatLng(53.3498, -6.2603),
+      google_maps.LatLng(48.8566, 2.3522),
     ];
 
-    var pointsGradient = <LatLng>[
-      LatLng(55.5, -0.09),
-      LatLng(54.3498, -6.2603),
-      LatLng(52.8566, 2.3522),
+    var pointsGradient = <google_maps.LatLng>[
+      google_maps.LatLng(55.5, -0.09),
+      google_maps.LatLng(54.3498, -6.2603),
+      google_maps.LatLng(52.8566, 2.3522),
     ];
 
     return Scaffold(
@@ -35,7 +36,7 @@ class PolylinePage extends StatelessWidget {
             Flexible(
               child: FlutterMap(
                 options: MapOptions(
-                  center: LatLng(51.5, -0.09),
+                  center: google_maps.LatLng(51.5, -0.09),
                   zoom: 5.0,
                 ),
                 layers: [

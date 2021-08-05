@@ -12,7 +12,8 @@ import 'package:flutter_map/src/gestures/multi_finger_gesture.dart';
 import 'package:flutter_map/src/map/flutter_map_state.dart';
 import 'package:flutter_map/src/map/map.dart';
 import 'package:flutter_map/src/plugins/plugin.dart';
-import 'package:latlong2/latlong.dart';
+// import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 
 export 'package:flutter_map/src/core/point.dart';
 export 'package:flutter_map/src/geo/crs/crs.dart';
@@ -100,7 +101,7 @@ abstract class MapController {
   /// returns `true` if move was success (for example it won't be success if
   /// navigating to same place with same zoom or if center is out of bounds and
   /// [MapOptions.slideOnBoundaries] isn't enabled)
-  bool move(LatLng center, double zoom, {String? id});
+  bool move(google_maps.LatLng center, double zoom, {String? id});
 
   /// Sets the map rotation to a certain degrees angle (in decimal).
   ///
@@ -115,7 +116,8 @@ abstract class MapController {
 
   /// Calls [move] and [rotate] together however layers will rebuild just once
   /// instead of twice
-  MoveAndRotateResult moveAndRotate(LatLng center, double zoom, double degree,
+  MoveAndRotateResult moveAndRotate(
+      google_maps.LatLng center, double zoom, double degree,
       {String? id});
 
   /// Fits the map bounds. Optional constraints can be defined
@@ -124,7 +126,7 @@ abstract class MapController {
 
   Future<Null> get onReady;
 
-  LatLng get center;
+  google_maps.LatLng get center;
 
   LatLngBounds? get bounds;
 
@@ -137,8 +139,8 @@ abstract class MapController {
   factory MapController() => MapControllerImpl();
 }
 
-typedef TapCallback = void Function(LatLng point);
-typedef LongPressCallback = void Function(LatLng point);
+typedef TapCallback = void Function(google_maps.LatLng point);
+typedef LongPressCallback = void Function(google_maps.LatLng point);
 typedef PositionCallback = void Function(MapPosition position, bool hasGesture);
 typedef MapCreatedCallback = void Function(MapController mapController);
 
@@ -234,18 +236,18 @@ class MapOptions {
   final Size? screenSize;
   final bool adaptiveBoundaries;
   final MapController? controller;
-  final LatLng center;
+  final google_maps.LatLng center;
   final LatLngBounds? bounds;
   final FitBoundsOptions boundsOptions;
-  final LatLng? swPanBoundary;
-  final LatLng? nePanBoundary;
+  final google_maps.LatLng? swPanBoundary;
+  final google_maps.LatLng? nePanBoundary;
 
   _SafeArea? _safeAreaCache;
   double? _safeAreaZoom;
 
   MapOptions({
     this.crs = const Epsg3857(),
-    LatLng? center,
+    google_maps.LatLng? center,
     this.bounds,
     this.boundsOptions = const FitBoundsOptions(),
     this.zoom = 13.0,
@@ -275,7 +277,7 @@ class MapOptions {
     this.controller,
     this.swPanBoundary,
     this.nePanBoundary,
-  })  : center = center ?? LatLng(50.5, 30.51),
+  })  : center = center ?? google_maps.LatLng(50.5, 30.51),
         assert(rotationThreshold >= 0.0),
         assert(pinchZoomThreshold >= 0.0),
         assert(pinchMoveThreshold >= 0.0) {
@@ -289,7 +291,7 @@ class MapOptions {
   }
 
   //if there is a pan boundary, do not cross
-  bool isOutOfBounds(LatLng? center) {
+  bool isOutOfBounds(google_maps.LatLng? center) {
     if (adaptiveBoundaries) {
       return !_safeArea!.contains(center);
     }
@@ -307,11 +309,12 @@ class MapOptions {
     return false;
   }
 
-  LatLng containPoint(LatLng point, LatLng fallback) {
+  google_maps.LatLng containPoint(
+      google_maps.LatLng point, google_maps.LatLng fallback) {
     if (adaptiveBoundaries) {
       return _safeArea!.containPoint(point, fallback);
     } else {
-      return LatLng(
+      return google_maps.LatLng(
         point.latitude.clamp(swPanBoundary!.latitude, nePanBoundary!.latitude),
         point.longitude
             .clamp(swPanBoundary!.longitude, nePanBoundary!.longitude),
@@ -330,11 +333,11 @@ class MapOptions {
       final northEastLatitude = nePanBoundary!.latitude - halfScreenHeight;
       final northEastLongitude = nePanBoundary!.longitude - halfScreenWidth;
       _safeAreaCache = _SafeArea(
-        LatLng(
+        google_maps.LatLng(
           southWestLatitude,
           southWestLongitude,
         ),
-        LatLng(
+        google_maps.LatLng(
           northEastLatitude,
           northEastLongitude,
         ),
@@ -369,7 +372,7 @@ class FitBoundsOptions {
 
 /// Position's type for [PositionCallback].
 class MapPosition {
-  final LatLng? center;
+  final google_maps.LatLng? center;
   final LatLngBounds? bounds;
   final double? zoom;
   final bool hasGesture;
@@ -382,7 +385,7 @@ class _SafeArea {
   final bool isLatitudeBlocked;
   final bool isLongitudeBlocked;
 
-  _SafeArea(LatLng southWest, LatLng northEast)
+  _SafeArea(google_maps.LatLng southWest, google_maps.LatLng northEast)
       : bounds = LatLngBounds(southWest, northEast),
         isLatitudeBlocked = southWest.latitude > northEast.latitude,
         isLongitudeBlocked = southWest.longitude > northEast.longitude;
@@ -390,7 +393,9 @@ class _SafeArea {
   bool contains(point) =>
       isLatitudeBlocked || isLongitudeBlocked ? false : bounds.contains(point);
 
-  LatLng containPoint(LatLng point, LatLng fallback) => LatLng(
+  google_maps.LatLng containPoint(
+          google_maps.LatLng point, google_maps.LatLng fallback) =>
+      google_maps.LatLng(
         isLatitudeBlocked
             ? fallback.latitude
             : point.latitude.clamp(bounds.south, bounds.north),

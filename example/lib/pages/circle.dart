@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
-
+// import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart' as google_maps;
 import '../widgets/drawer.dart';
 
 class CirclePage extends StatelessWidget {
@@ -11,7 +11,7 @@ class CirclePage extends StatelessWidget {
   Widget build(BuildContext context) {
     var circleMarkers = <CircleMarker>[
       CircleMarker(
-          point: LatLng(51.5, -0.09),
+          point: google_maps.LatLng(51.5, -0.09),
           color: Colors.blue.withOpacity(0.7),
           borderStrokeWidth: 2,
           useRadiusInMeter: true,
@@ -33,7 +33,7 @@ class CirclePage extends StatelessWidget {
             Flexible(
               child: FlutterMap(
                 options: MapOptions(
-                  center: LatLng(51.5, -0.09),
+                  center: google_maps.LatLng(51.5, -0.09),
                   zoom: 11.0,
                 ),
                 layers: [
